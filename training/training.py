@@ -3,11 +3,12 @@ import keras
 from keras import layers
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 IMAGE_SIZE = (256, 256)
 BATCH_SIZE = 32
 CHANNELS = 3
-EPOCHS = 20
+EPOCHS = 15
 
 # Load the potato data into a tensorflow dataset
 potato_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -135,6 +136,5 @@ history = model.fit(
 #     plt.axis("off")
 # plt.show()
 
-# Save the model
-model_version = 1
-model.save(f"../models/potato-model/{model_version}.keras")
+# Save the model to the models directory
+model.save('models/potato-model_15-epochs.keras') 
