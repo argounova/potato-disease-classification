@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import io
 import numpy as np
@@ -8,6 +9,18 @@ import keras
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the model
 MODEL = tf.keras.models.load_model('models/potato-model_15-epochs.keras')
@@ -33,9 +46,9 @@ async def predict(
   img_batch = np.expand_dims(image, 0)
   predictions = MODEL.predict(img_batch)
   predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
-  confidence = round(100 * (np.max(predictions[0])), 2)
+  confidence = round((np.max(predictions[0])), 2)
   return {"class": predicted_class, "confidence": confidence}
     
 
 if __name__ == "__main__":
-  uvicorn.run(app, host='localhost', port=3000)
+  uvicorn.run(app, host='localhost', port=8000)
