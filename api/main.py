@@ -28,10 +28,6 @@ MODEL = tf.keras.models.load_model('models/potato-model_15-epochs.keras')
 # Define the class names
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
-# @app.get("/ping")
-# async def ping():
-#     return {"ping": "pong!"}
-
 # Read file and convert pillow image to numpy array
 def read_imagefile(data) -> np.ndarray:
   image = np.array(Image.open(io.BytesIO(data)))
