@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 # Load the model
-MODEL = tf.keras.models.load_model('models/potato-model_15-epochs.keras')
+MODEL = tf.keras.models.load_model('../models/potato-model_15-epochs.keras')
 
 # Define the class names
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
@@ -42,7 +42,7 @@ async def predict(
   img_batch = np.expand_dims(image, 0)
   predictions = MODEL.predict(img_batch)
   predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
-  confidence = round((np.max(predictions[0])), 2)
+  confidence = round(float(np.max(predictions[0])), 2)
   return {"class": predicted_class, "confidence": confidence}
     
 

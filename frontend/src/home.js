@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -9,8 +9,8 @@ import React from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Paper, CardActionArea, CardMedia, Grid, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Button, CircularProgress } from "@material-ui/core";
-import cblogo from "./cblogo.PNG";
-import image from "./bg.png";
+import logo from "./favicon.png";
+import image from "./bg.jpg";
 import { DropzoneArea } from 'material-ui-dropzone';
 import { common } from '@material-ui/core/colors';
 import Clear from '@material-ui/icons/Clear';
@@ -24,7 +24,7 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText(common.white),
     backgroundColor: common.white,
     '&:hover': {
-      backgroundColor: '#ffffff7a',
+      backgroundColor: '##000',
     },
   },
 }))(Button);
@@ -63,14 +63,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
-    height: "93vh",
+    height: "100vh",
     marginTop: "8px",
   },
   imageCard: {
     margin: "auto",
     maxWidth: 400,
     height: 500,
-    backgroundColor: 'transparent',
+    backgroundColor: '#000',
     boxShadow: '0px 9px 70px 0px rgb(0 0 0 / 30%) !important',
     borderRadius: '15px',
   },
@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   appbar: {
-    background: '#be6a77',
+    background: '#000',
     boxShadow: 'none',
     color: 'white'
   },
@@ -153,7 +153,7 @@ export const ImageUpload = () => {
   const [isLoading, setIsloading] = useState(false);
   let confidence = 0;
 
-  const sendFile = async () => {
+  const sendFile = useCallback(async () => {
     if (image) {
       let formData = new FormData();
       formData.append("file", selectedFile);
@@ -167,7 +167,8 @@ export const ImageUpload = () => {
       }
       setIsloading(false);
     }
-  }
+  }, [image, selectedFile]);
+
 
   const clearData = () => {
     setData(null);
@@ -186,12 +187,11 @@ export const ImageUpload = () => {
   }, [selectedFile]);
 
   useEffect(() => {
-    if (!preview) {
-      return;
-    }
+    if (!preview) return;
     setIsloading(true);
     sendFile();
-  }, [preview]);
+  }, [preview, sendFile]);
+
 
   const onSelectFile = (files) => {
     if (!files || files.length === 0) {
@@ -214,10 +214,10 @@ export const ImageUpload = () => {
       <AppBar position="static" className={classes.appbar}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            CodeBasics: Potato Disease Classification
+            Potato Disease Classification
           </Typography>
           <div className={classes.grow} />
-          <Avatar src={cblogo}></Avatar>
+          <Avatar src={logo}></Avatar>
         </Toolbar>
       </AppBar>
       <Container maxWidth={false} className={classes.mainContainer} disableGutters={true}>
